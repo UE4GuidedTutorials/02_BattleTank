@@ -19,8 +19,20 @@ void ARealTankPlayerController::BeginPlay()
 
 }
 
+void ARealTankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardsCrosshair();
+}
+
+void ARealTankPlayerController::AimTowardsCrosshair()
+{
+	if (!GetControlledTank()) { return; }
+}
+
+
 ATank* ARealTankPlayerController::GetControlledTank() const
 {
-	return Cast<ATank>(GetPawn());//not sure what this does
+	return Cast<ATank>(GetPawn());
 	
 }

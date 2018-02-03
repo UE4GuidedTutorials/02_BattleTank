@@ -4,26 +4,28 @@
 
 
 
+
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();//makes sure that override is working correctly
 	UE_LOG(LogTemp, Warning, TEXT("AIController Begin Play"));
 
-	auto AITank = AIControlledTank();
-	if (!AITank)//checks to see if tank not controlled and protects pointer
+	auto PlayerTank = GetPlayerTank();
+	if (!PlayerTank)//checks to see if tank not controlled and protects pointer
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController not possessing a tank"));
+		UE_LOG(LogTemp, Warning, TEXT("AIController can't find player tank"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController possessing: %s"), *(AITank->GetName()));//reports controlled tank
+		UE_LOG(LogTemp, Warning, TEXT("AIController found player: %s"), *(PlayerTank->GetName()));//reports controlled tank
 	}
 
 }
 
-ATank* ATankAIController::AIControlledTank() const
+ATank* ATankAIController::GetPlayerTank() const
 {
-	return Cast<ATank>(GetPawn());//not sure what this does
-
+	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	if (!PlayerPawn) { return nullptr;}
+	return Cast<ATank>(PlayerPawn);
 }
 
