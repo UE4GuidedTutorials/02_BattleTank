@@ -28,6 +28,9 @@ void ARealTankPlayerController::Tick(float DeltaTime)
 void ARealTankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetControlledTank()) { return; }
+
+	FVector HitLocation;
+	UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"),*HitLocation.ToString());
 }
 
 
