@@ -38,7 +38,7 @@ void ARealTankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *HitLocation.ToString());//reports coordinates of line trace hit
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 
@@ -51,10 +51,29 @@ bool ARealTankPlayerController::GetSightRayHitLocation(FVector& HitLocation) con
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *LookDirection.ToString());
+		GetLookVectorHitLocation(LookDirection, HitLocation);
 	}
 
 	return true;
+}
+
+bool ARealTankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
+{
+	FHitResult HitResult;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility)//hits anything that is visible
+		)
+		{
+		HitLocation = HitResult.Location;
+		return true;
+		}
+	HitLocation = FVector(0);
+	return false;
 }
 
 bool ARealTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
@@ -68,4 +87,5 @@ bool ARealTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVect
 		CameraWorldLocation,
 		LookDirection
 	);
-}
+} 
+

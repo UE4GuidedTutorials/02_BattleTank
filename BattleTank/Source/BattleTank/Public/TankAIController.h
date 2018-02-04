@@ -6,6 +6,7 @@
 #include "Tank.h"
 #include "AIController.h"
 #include "Engine/World.h"
+#include "GameFramework/Actor.h"
 #include "TankAIController.generated.h"
 
 UCLASS()
@@ -17,6 +18,10 @@ private:
 
 	ATank* GetPlayerTank() const;
 
+	ATank* GetControlledTank() const;
+
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
 
 };

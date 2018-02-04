@@ -29,4 +29,6 @@ public:
 
 	
 	
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector & HitLocation) const;
+
 };
